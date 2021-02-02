@@ -1,0 +1,8 @@
+<bean id="authProvider"
+      class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    <property name="userDetailsService" ref="customUserService"/>
+    <property name="passwordEncoder" ref="encoder"/>
+</bean>
+
+<bean id="encoder"
+      class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
