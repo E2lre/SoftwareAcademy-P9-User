@@ -1,4 +1,5 @@
 # SoftwareAcademy-P9-User-V2
+Micro-service NOTES manage users authentification
 
 ## Installation
 

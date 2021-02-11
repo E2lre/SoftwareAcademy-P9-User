@@ -25,8 +25,7 @@ public class UserServiceImpl implements UserService{
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
     @Autowired
     private UserDao userDao;
- /*   @Autowired
-    private RoleDao roleDao;*/
+
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
@@ -34,32 +33,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private AuthenticationManager authenticationManager;
 
- /*   @Override
-    public User findByUser(String username) {
-        return userDao.findByUsername(username);
-    }
-   */
-// TODO deprecated
-/*    @Override
-    public boolean checkUser(User user) {
-        boolean result = false;
-        User userResult = userDao.findByUsername(user.getUsername());
-        if (userResult!=null) {
-            if (user.getPwd().equals(userResult.getPwd()))
-            {
-                logger.debug("user " + user.getUsername()+" is correctly identify");
-                result = true;
-            } else {
-                logger.debug("user/pwd are incorrect for user " + user.getUsername());
-                result = false;
-            }
-        } else {
-            logger.debug("user " + user.getUsername() + " not found" );
-            result = false;
-        }
 
-        return result;
-    }*/
     @Override
     public String signin(User user) {
         logger.info("start");
