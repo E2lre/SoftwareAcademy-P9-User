@@ -1,5 +1,5 @@
 # SoftwareAcademy-P9-User-V2
-Micro-service NOTES manage users authentification
+Micro-service User manage users authentification
 
 ## Installation
 
@@ -9,12 +9,14 @@ Micro-service NOTES manage users authentification
 
 ###Docker image construction in project directory : ==> TODO
 
-docker build --build-arg JAR_FILE=target/*.jar -t p9-user-v2 .
+docker build --build-arg JAR_FILE=target/*.jar -t p9-user .
 
 ### Docker execution :==> TODO
 
-docker run -p 9102:9102 --name USER p9-user-v2
+docker run -p 8083:8083 --name USER p9-user
 
+#### Docker execution for all project
+* On user project directory : 
 
 execute command line to start all components: docker-compose up -d
 

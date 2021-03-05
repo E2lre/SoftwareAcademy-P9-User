@@ -1,0 +1,149 @@
+version: '3'
+services:
+  zipkin:
+    image:  openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    environment:
+      DB_UPSTREAM: http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:9411
+    networks:
+      - my_network
+    #restart: always
+  eureka:
+    depends_on:
+      - zipkin
+    image: p9-eureka
+    # port externe:interne
+    ports:
+      - "9102:9102"
+      - "8761:8761"
+    environment:
+      DB_UPSTREAM: http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:9102
+      DB_UPSTREAM: http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:8761
+    networks:
+      - my_network
+    #restart: always
+  config:
+    depends_on:
+      - zipkin
+      - eureka
+    image: p9-config
+    ports:
+      - "9101:9101"
+      - "9191:9191"
+    healthcheck:
+      test: "exit 0"
+    environment:
+      DB_UPSTREAM: http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:9101
+      DB_UPSTREAM: http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:9191
+    networks:
+      - my_network
+    #restart: always
+  springadmin:
+    depends_on:
+      config:
+        condition: service_healthy
+      zipkin:
+        condition: service_started
+      eureka:
+        condition: service_started
+    image:  p9-spring-admin
+    ports:
+      - "9105:9105"
+    networks:
+      - my_network
+    restart: on-failure
+  zuul:
+    depends_on:
+      config:
+        condition: service_healthy
+      zipkin:
+        condition: service_started
+      eureka:
+        condition: service_started
+    image:  p9-zuul
+    ports:
+      - "9004:9004"
+    networks:
+      - my_network
+    restart: on-failure
+  user:
+    depends_on:
+      config:
+        condition: service_healthy
+      zipkin:
+        condition: service_started
+      eureka:
+        condition: service_started
+      springadmin:
+        condition: service_started
+      zuul:
+        condition: service_started
+    image:  p9-user
+    ports:
+      - "8083:8083"
+      - "8093:8093"
+    networks:
+      - my_network
+    restart: "no"
+#retirer le no quand docker sera stable
+  patient:
+    depends_on:
+      config:
+        condition: service_healthy
+      zipkin:
+        condition: service_started
+      eureka:
+        condition: service_started
+      springadmin:
+        condition: service_started
+      zuul:
+        condition: service_started
+    image:  p9-patient
+    ports:
+      - "8084:8084"
+      - "8094:8094"
+    networks:
+      - my_network
+    restart: "no"
+  notes:
+    depends_on:
+### ajouter une dépendance sur Mongodb
+      config:
+        condition: service_healthy
+      zipkin:
+        condition: service_started
+      eureka:
+        condition: service_started
+      springadmin:
+        condition: service_started
+      zuul:
+        condition: service_started
+    image:  p9-notes
+    ports:
+      - "8085:8085"
+      - "8095:8095"
+    networks:
+      - my_network
+    restart: "no"
+  assess:
+    depends_on:
+      config:
+        condition: service_healthy
+      zipkin:
+        condition: service_started
+      eureka:
+        condition: service_started
+      springadmin:
+        condition: service_started
+      zuul:
+        condition: service_started
+    image:  p9-assess
+    ports:
+      - "8086:8086"
+      - "8096:8096"
+    networks:
+      - my_network
+    restart: "no"
+networks:
+  my_network:
