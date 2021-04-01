@@ -27,7 +27,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureTestDatabase
-//@Configuration
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class UserServiceTest {
 
@@ -61,7 +60,6 @@ public class UserServiceTest {
     /*------------------------ signin ---------------------------------*/
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    //@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void signin_correctUsernameAndPwd_tockenIsReturn(){
         //GIVEN
         Authentication t = null;
@@ -79,11 +77,9 @@ public class UserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    //@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void signin_incorrectUsernameAndPwd_errorReturn(){
         //GIVEN
         Mockito.when(userDaoMock.findByUsername((anyString()))).thenReturn(user);
-        //Mockito.when(jwtTokenProviderMock.createToken(any(),any())).thenReturn("");
 
         //WHEN
         String result = userService.signin(user);
@@ -130,7 +126,7 @@ public class UserServiceTest {
         Mockito.when(userDaoMock.findByUsername(anyString())).thenReturn(user);
         Mockito.when(passwordEncoderMock.encode(anyString())).thenReturn(encryptPasswordConst);
         Mockito.when(userDaoMock.save(any(User.class))).thenReturn(user);
-        //Mockito.when(jwtTokenProviderMock.createToken(anyString(),any(List.class))).thenReturn(tokenConst);
+
         //WHEN
         User result = userService.updateUser(user);
         //THEN
@@ -144,7 +140,7 @@ public class UserServiceTest {
         Mockito.when(userDaoMock.findByUsername(anyString())).thenReturn(null);
         Mockito.when(passwordEncoderMock.encode(anyString())).thenReturn(encryptPasswordConst);
         Mockito.when(userDaoMock.save(any(User.class))).thenReturn(user);
-        //Mockito.when(jwtTokenProviderMock.createToken(anyString(),any(List.class))).thenReturn(tokenConst);
+
         //WHEN
         User result = userService.updateUser(user);
         //THEN
@@ -158,8 +154,7 @@ public class UserServiceTest {
         //GIVEN
         Mockito.when(userDaoMock.findByUsername(anyString())).thenReturn(user);
         Mockito.when(passwordEncoderMock.encode(anyString())).thenReturn(encryptPasswordConst);
-        //Mockito.when(userDaoMock.delete(any(User.class))).thenReturn(null);
-        //Mockito.when(jwtTokenProviderMock.createToken(anyString(),any(List.class))).thenReturn(tokenConst);
+
         //WHEN
         User result = userService.deleteUser(user);
         //THEN
@@ -172,8 +167,7 @@ public class UserServiceTest {
         //GIVEN
         Mockito.when(userDaoMock.findByUsername(anyString())).thenReturn(null);
         Mockito.when(passwordEncoderMock.encode(anyString())).thenReturn(encryptPasswordConst);
-        //Mockito.when(userDaoMock.save(any(User.class))).thenReturn(user);
-        //Mockito.when(jwtTokenProviderMock.createToken(anyString(),any(List.class))).thenReturn(tokenConst);
+
         //WHEN
         User result = userService.deleteUser(user);
         //THEN

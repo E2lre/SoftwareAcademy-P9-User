@@ -3,9 +3,6 @@ package com.mediscreen.user.model;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-/*import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;*/
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,8 +14,6 @@ public class User implements Serializable {
     @GeneratedValue
     private long id;
 
-    //@Id
-    //@Column(name="username",length=100)
     @Column(name="username",length=100,unique=true)
     @NotNull
     private String username;

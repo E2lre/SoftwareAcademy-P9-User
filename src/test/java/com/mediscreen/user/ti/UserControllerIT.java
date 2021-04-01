@@ -24,17 +24,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerIT {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private UserDao userDao;
 
-    private User user;
+
     //constantes de test
     String usernameConst = "username";
     String passwordConst = "password";
     String incorrectPasswordConst = "incorrectpassword";
     String inexistingUsernameConst = "new_username";
-    String tokenConst = "myToken";
-    String encryptPasswordConst = "$2a$12$scj6PvgZYRLahntmwOmm/.PnXJjHYK2SpsgsWb6fFbZBr5nWpbmJ6";
+
 
     /*---------------------------------------- Signin-------------------------------*/
     @Test

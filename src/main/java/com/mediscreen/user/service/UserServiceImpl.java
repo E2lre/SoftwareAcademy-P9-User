@@ -2,7 +2,6 @@ package com.mediscreen.user.service;
 
 import com.mediscreen.user.config.security.JwtTokenProvider;
 import com.mediscreen.user.controller.exception.CustomException;
-//import com.mediscreen.patient.dao.RoleDao;
 import com.mediscreen.user.dao.UserDao;
 import com.mediscreen.user.model.Role;
 import com.mediscreen.user.model.User;
@@ -70,7 +69,6 @@ public class UserServiceImpl implements UserService{
         } else {
             logger.error("Username is already use : " + user.getUsername());
             return null;
-            //throw new CustomException("Username is already in use", HttpStatus.NOT_ACCEPTABLE);
 
         }
     }

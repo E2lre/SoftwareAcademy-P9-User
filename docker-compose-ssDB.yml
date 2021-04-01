@@ -67,46 +67,6 @@ services:
     networks:
       - my_network
     restart: on-failure
-  mysql:
-    depends_on:
-      config:
-        condition: service_healthy
-      zipkin:
-        condition: service_started
-      eureka:
-        condition: service_started
-    image:  mysql
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_DATABASE: 'mediscreen_prod'
-      # So you don't have to use root, but you can if you like
-      MYSQL_USER: 'mediscreen'
-      # You can use whatever password you like
-      MYSQL_PASSWORD: 'ocr-p9$$+'
-      # Password for root access
-      MYSQL_ROOT_PASSWORD: 'rootroot'
-    healthcheck:
-      test: "exit 0"
-    networks:
-      - my_network
-    restart: on-failure
-  mongodb:
-    image: mongo
-    volumes:
-      - "./mongo/data:/data/db"
-    ports:
-      - "27017:27017"
-    restart: always
-    environment:
-    ##  MONGO_INITDB_ROOT_USERNAME: 'mediscreen'
-    ##  MONGO_INITDB_ROOT_PASSWORD: 'ocr-p9$$+'
-      MONGO_INITDB_ROOT_USERNAME: 'root'
-      MONGO_INITDB_ROOT_PASSWORD: 'rootroot'
-    healthcheck:
-      test: "exit 0"
-    networks:
-      - my_network
   user:
     depends_on:
       config:
@@ -119,8 +79,6 @@ services:
         condition: service_started
       zuul:
         condition: service_started
-      mysql:
-        condition: service_healthy
     image:  p9-user
     ports:
       - "8083:8083"
@@ -143,15 +101,12 @@ services:
         condition: service_started
       zuul:
         condition: service_started
-      mysql:
-        condition: service_healthy
     image:  p9-patient
     ports:
       - "8084:8084"
       - "8094:8094"
     environment:
-       - JASYPT_ENCRYPTOR_PASSWORD=openclassroom
-       #- JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}  
+      - JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}  
     networks:
       - my_network
     restart: "no"
@@ -168,15 +123,12 @@ services:
         condition: service_started
       zuul:
         condition: service_started
-      mongodb:
-        condition: service_healthy      
     image:  p9-notes
     ports:
       - "8085:8085"
       - "8095:8095"
     environment:
-      - JASYPT_ENCRYPTOR_PASSWORD=openclassroom
-      #- JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}  
+      - JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}  
     networks:
       - my_network
     restart: "no"
@@ -192,8 +144,6 @@ services:
         condition: service_started
       zuul:
         condition: service_started
-      mongodb:
-        condition: service_healthy  
     image:  p9-assess
     ports:
       - "8086:8086"
