@@ -8,12 +8,11 @@ services:
       DB_UPSTREAM: http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:9411
     networks:
       - my_network
-    #restart: always
+    restart: always
   eureka:
     depends_on:
       - zipkin
     image: p9-eureka
-    # port externe:interne
     ports:
       - "9102:9102"
       - "8761:8761"
@@ -22,7 +21,7 @@ services:
       DB_UPSTREAM: http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:8761
     networks:
       - my_network
-    #restart: always
+    restart: always
   config:
     depends_on:
       - zipkin
@@ -38,7 +37,7 @@ services:
       DB_UPSTREAM: http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:9191
     networks:
       - my_network
-    #restart: always
+    restart: always
   springadmin:
     depends_on:
       config:
@@ -99,12 +98,11 @@ services:
       - "27017:27017"
     restart: always
     environment:
-    ##  MONGO_INITDB_ROOT_USERNAME: 'mediscreen'
-    ##  MONGO_INITDB_ROOT_PASSWORD: 'ocr-p9$$+'
       MONGO_INITDB_ROOT_USERNAME: 'root'
       MONGO_INITDB_ROOT_PASSWORD: 'rootroot'
     healthcheck:
       test: "exit 0"
+    restart: on-failure
     networks:
       - my_network
   user:
@@ -129,8 +127,7 @@ services:
     - JASYPT_ENCRYPTOR_PASSWORD=openclassroom
     networks:
       - my_network
-    restart: "no"
-#retirer le no quand docker sera stable
+    restart: on-failure
   patient:
     depends_on:
       config:
@@ -150,14 +147,12 @@ services:
       - "8084:8084"
       - "8094:8094"
     environment:
-       - JASYPT_ENCRYPTOR_PASSWORD=openclassroom
-       #- JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}  
+       - JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}  
     networks:
       - my_network
-    restart: "no"
+    restart: on-failure
   notes:
     depends_on:
-### ajouter une dépendance sur Mongodb
       config:
         condition: service_healthy
       zipkin:
@@ -175,11 +170,10 @@ services:
       - "8085:8085"
       - "8095:8095"
     environment:
-      - JASYPT_ENCRYPTOR_PASSWORD=openclassroom
-      #- JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}  
+      - JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}  
     networks:
       - my_network
-    restart: "no"
+    restart: on-failure
   assess:
     depends_on:
       config:
@@ -200,6 +194,14 @@ services:
       - "8096:8096"
     networks:
       - my_network
-    restart: "no"
+    restart: on-failure
+  nginx:
+    container_name: exteam-app
+    image: exteam
+    build: '.'
+    ports:
+      - "4200:4200"
+    networks:
+      - my_network
 networks:
   my_network:
