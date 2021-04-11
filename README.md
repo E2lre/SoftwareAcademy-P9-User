@@ -28,7 +28,7 @@ For Global application
 ## Installation
 Check PatientV2 Readme.md for global installation 
 
-###Docker image construction in project directory :
+### Docker image construction in project directory :
 docker build --build-arg JAR_FILE=target/*.jar -t p9-user .
 
 ### Docker execution if docker-compose is not use
