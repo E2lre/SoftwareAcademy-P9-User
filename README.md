@@ -38,7 +38,7 @@ docker run -p 8083:8083 --name USER p9-user
 on MySQL
 * execute script CreateDatabase.sql to create database « mediscreen_prod » and create user « mediscreen »
 * with user mediscreen_prod, exécute script create.sql to create tables patient and user
-* execute script data.sql present in ressource if PatientV2 pour initiate user table
+* execute script data.sql present in ressource if PatientV2 for initiate user table
 
 ## URI
 ### signin
